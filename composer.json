@@ -1,0 +1,61 @@
+{
+    "name": "jonjon1992/ms-keys",
+    "version": "v1.3.11",
+    "repositories": [
+        {
+            "type": "git",
+            "name": "jonjon1992/php-slim-modular",
+            "url": "https://github.com/JonJon1992/php-slim-modular.git"
+        },
+        {
+            "type": "git",
+            "name": "jonjon1992/s3-php",
+            "url": "https://github.com/JonJon1992/s3-php.git"
+        },
+        {
+            "type": "git",
+            "name": "jonjon1992/php-dynamo",
+            "url": "https://github.com/JonJon1992/php-dynamo.git"
+        }
+    ],
+    "require": {
+        "ext-openssl": "*",
+        "ext-fileinfo": "*",
+        "ext-json": "*",
+        "ext-sodium": "*",
+        "ext-pdo": "*",
+        "php": ">= 8.2",
+        "jonjon1992/php-slim-modular": "v2.9.10",
+        "ramsey/uuid": "4.7.5",
+        "lcobucci/jwt": "^4.1",
+        "ext-iconv": "*"
+    },
+    "require-dev": {
+        "jangregor/phpstan-prophecy": "1.0.0",
+        "overtrue/phplint": "9.0.6",
+        "phpspec/prophecy-phpunit": "v2.1.0",
+        "phpstan/extension-installer": "1.3.1",
+        "phpstan/phpstan": "1.10.50",
+        "phpunit/phpunit": "10.5.3",
+        "squizlabs/php_codesniffer": "3.8.0",
+        "symfony/var-dumper": "v7.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "MSKeys\\": "modules/ms-keys/"
+        }
+    },
+    "prefer-stable": true,
+    "minimum-stability": "dev",
+    "config": {
+        "process-timeout": 0,
+        "sort-packages": true,
+        "allow-plugins": {
+            "phpstan/extension-installer": false
+        }
+    },
+    "scripts": {
+        "start": "php -S localhost:8088 public/index.php",
+        "artisan": "php cli.php --ansi"
+    }
+}

@@ -1,0 +1,25 @@
+### Variáveis
+@baseUrl = http://localhost:8088
+@contentType = application/json
+
+### Health / Info
+GET {{baseUrl}}/
+###
+GET {{baseUrl}}/version
+###
+GET {{baseUrl}}/im-alive
+###
+
+### Keys
+
+### Criar chave (POST /ms-keys/v1/keys)
+POST {{baseUrl}}/ms-keys/v1/keys
+Content-Type: {{contentType}}
+
+{
+  "clientKey": "prod-abc123",
+  "status": "ACTIVE",
+  "expiresAt": "2026-12-31T23:59:59Z",
+  "maxActivations": 5,
+  "deviceKey": "device-xyz789"
+}
