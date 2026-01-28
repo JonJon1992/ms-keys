@@ -22,6 +22,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Create auth.json for Composer
+        run: bash scripts/create-auth-json.sh
+        env:
+          COMPOSER_GITHUB_USERNAME: ${{ secrets.COMPOSER_GITHUB_USERNAME }}
+          COMPOSER_GITHUB_TOKEN: ${{ secrets.COMPOSER_GITHUB_TOKEN }}
+
       - name: Log in to the Container registry
         uses: docker/login-action@v3
         with:
