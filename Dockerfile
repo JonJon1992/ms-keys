@@ -4,6 +4,7 @@ FROM ghcr.io/jonjon1992/php-83-base:build-v1.2.7 AS builder
 COPY . /var/www
 WORKDIR /var/www
 
+RUN composer install --no-dev --optimize-autoloader
 
 FROM ghcr.io/jonjon1992/php-83-base:runtime-v1.2.7
 
