@@ -2,7 +2,9 @@
 .gitignore
 auth.json
 logs
-var
+var/cache/*
+var/logs/*
+var/temp/*
 vendor
 .env
 docker-compose.yml

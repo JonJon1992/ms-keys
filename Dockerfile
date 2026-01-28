@@ -1,11 +1,11 @@
 
-FROM php-83-build:latest AS builder
+FROM ghcr.io/jonjon1992/php-83-base:build-v1.2.7 AS builder
 
 COPY . /var/www
 WORKDIR /var/www
 
 
-FROM php-83-runtime:latest
+FROM ghcr.io/jonjon1992/php-83-base:runtime-v1.2.7
 
 ARG WITH_XDEBUG
 
