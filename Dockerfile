@@ -1,11 +1,11 @@
-FROM php-83-build:latest AS builder
+
+FROM ghcr.io/jonjon1992/php-83-base:build-v1.2.7 AS builder
 
 COPY . /var/www
 WORKDIR /var/www
 
-RUN composer install --no-dev --optimize-autoloader
 
-FROM php-83-runtime:latest
+FROM ghcr.io/jonjon1992/php-83-base:runtime-v1.2.7
 
 ARG WITH_XDEBUG
 
@@ -39,8 +39,5 @@ RUN set -ex; \
     docker-php-ext-install -j "${nproc}" \
     pdo_pgsql \
     pdo_mysql
-
-
 RUN touch .env
-
 ENTRYPOINT [ "/start.sh" ]
