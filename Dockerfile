@@ -39,3 +39,5 @@ RUN set -ex; \
     docker-php-ext-install -j "${nproc}" \
     pdo_pgsql \
     pdo_mysql
+
+ENTRYPOINT [ "/start.sh" ]
