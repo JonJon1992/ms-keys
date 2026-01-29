@@ -21,6 +21,17 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        fetch-depth: 0
+
+      - name: Generate version tag
+        id: version
+        run: |
+          if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            echo "tag=${{ github.ref_name }}" >> "$GITHUB_OUTPUT"
+          else
+            V=$(jq -r '.version' composer.json)
+            echo "tag=${V}" >> "$GITHUB_OUTPUT"
+          fi
 
       - name: Create auth.json for Composer
         run: bash scripts/create-auth-json.sh
@@ -41,9 +52,12 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
-            type=raw,value=latest,enable=${{ github.ref == 'format("refs/heads/{0}", "main")' }}
-            type=ref,event=branch
-            type=ref,event=tag
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' }}
+            type=raw,value=${{ steps.version.outputs.tag }},enable=${{ github.event_name != 'pull_request' && !startsWith(github.ref, 'refs/tags/') }}
+            type=ref,event=tag,enable=${{ startsWith(github.ref, 'refs/tags/') }}
+            type=semver,pattern={{version}},enable=${{ startsWith(github.ref, 'refs/tags/') }}
+            type=semver,pattern={{major}}.{{minor}},enable=${{ startsWith(github.ref, 'refs/tags/') }}
+            type=semver,pattern={{major}},enable=${{ startsWith(github.ref, 'refs/tags/') }}
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5

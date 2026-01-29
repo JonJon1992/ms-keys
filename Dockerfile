@@ -31,7 +31,13 @@ RUN [ "$WITH_XDEBUG" = "true" ] && (pecl install xdebug-3.3.0 && docker-php-ext-
 RUN groupadd -f app && (id -u app > /dev/null 2>&1 || useradd -g app -m app)
 
 RUN mkdir -p logs var/logs var/cache var/temp keystore \
+    && chmod -R 775 logs var keystore \
     && chown -R app:app logs var keystore
+
+RUN chmod +x /var/www/scripts/setup-dirs.sh \
+    && cp /var/www/scripts/docker-entrypoint.sh /docker-entrypoint.sh \
+    && chmod +x /docker-entrypoint.sh \
+    && sed -i 's/\r$//' /docker-entrypoint.sh /var/www/scripts/setup-dirs.sh
 
 RUN for f in /start.sh /set-env-php.sh /set-env-fastcgi.sh /run-api.sh /run-job.sh; do \
     [ -f "$f" ] && sed -i 's/\r$//' "$f"; \
@@ -42,4 +48,4 @@ RUN set -ex; \
     pdo_pgsql \
     pdo_mysql
 
-ENTRYPOINT [ "/start.sh" ]
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
