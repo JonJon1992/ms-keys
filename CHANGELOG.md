@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.3.13] - 2025-01-28
+
+### Fixed
+
+- **Docker**: `setup-dirs.sh` — `chmod 777` em `logs`, `var`, `keystore` para evitar "Permission denied" em `var/temp/im-alive.log` com volume mount (PHP como www-data)
+
+### Changed
+
+- **Scripts**: pequenas alterações em `create-auth-json.sh` e `setup-dirs.sh` (comentários)
+
 ## [1.3.12] - 2025-01-28
 
 ### Added
@@ -24,5 +34,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Docker**: Permissões e ownership de `logs`, `var`, `keystore` no build; `ENTRYPOINT` passa a usar `/docker-entrypoint.sh`
 - **Deps**: `jonjon1992/php-slim-modular` `v2.9.13` → `v2.9.14`
 
-[Unreleased]: https://github.com/jonjon1992/ms-keys/compare/v1.3.12...HEAD
+[Unreleased]: https://github.com/jonjon1992/ms-keys/compare/v1.3.13...HEAD
+[1.3.13]: https://github.com/jonjon1992/ms-keys/compare/v1.3.12...v1.3.13
 [1.3.12]: https://github.com/jonjon1992/ms-keys/compare/v1.3.11...v1.3.12

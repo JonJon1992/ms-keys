@@ -48,7 +48,6 @@ if [ -z "$TOKEN" ]; then
     exit 1
 fi
 
-# Escapa aspas e barras invertidas para JSON
 escape_json() {
     printf '%s' "$1" | sed 's/\\/\\\\/g; s/"/\\"/g'
 }
