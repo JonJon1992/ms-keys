@@ -99,8 +99,36 @@ jobs:
       - name: Install dependencies
         run: composer install --no-dev --prefer-dist --optimize-autoloader
 
-      - name: Deploy to Square Cloud
-        uses: squarecloudofc/github-action@v2
-        with:
-          token: ${{ secrets.SQUARE_TOKEN }}
-          command: commit ${{ secrets.SQUARE_APPLICATION_ID }} --restart
+      - name: Create deploy zip
+        run: |
+          zip -r app.zip . -x ".git/*" -x ".git*" -x "*.zip"
+
+      - name: Deploy to Square Cloud (API)
+        env:
+          SQUARE_TOKEN: ${{ secrets.SQUARE_TOKEN }}
+          SQUARE_APPLICATION_ID: ${{ secrets.SQUARE_APPLICATION_ID }}
+        run: |
+          set -e
+          COMMIT_RES=$(curl -s -w "\n%{http_code}" -X POST \
+            "https://api.squarecloud.app/v2/apps/${SQUARE_APPLICATION_ID}/commit" \
+            -H "Authorization: ${SQUARE_TOKEN}" \
+            -F "file=@app.zip")
+          HTTP_CODE=$(echo "$COMMIT_RES" | tail -n1)
+          BODY=$(echo "$COMMIT_RES" | sed '$d')
+          if [ "$HTTP_CODE" -ge 200 ] && [ "$HTTP_CODE" -lt 300 ]; then
+            echo "Commit OK (HTTP $HTTP_CODE)"
+          else
+            echo "Commit response (HTTP $HTTP_CODE): $BODY"
+            exit 1
+          fi
+          sleep 2
+          RESTART_RES=$(curl -s -w "\n%{http_code}" -X POST \
+            "https://api.squarecloud.app/v2/apps/${SQUARE_APPLICATION_ID}/restart" \
+            -H "Authorization: ${SQUARE_TOKEN}")
+          R_CODE=$(echo "$RESTART_RES" | tail -n1)
+          if [ "$R_CODE" -ge 200 ] && [ "$R_CODE" -lt 300 ]; then
+            echo "Restart OK (HTTP $R_CODE)"
+          else
+            echo "Restart response (HTTP $R_CODE): $(echo "$RESTART_RES" | sed '$d')"
+            exit 1
+          fi

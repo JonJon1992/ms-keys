@@ -12,7 +12,7 @@ Este projeto está configurado para deploy na [Square Cloud](https://squarecloud
 
 ## Opção 1: Deploy via GitHub Actions (recomendado)
 
-O workflow `.github/workflows/squarecloud-deploy.yml` faz o deploy automaticamente em cada **push** em `master` ou `main`, ou manualmente em **Actions → Deploy Square Cloud → Run workflow**.
+O workflow `.github/workflows/deploy.yml` faz o deploy automaticamente em cada **push** em `master` ou `main`, ou manualmente em **Actions → Deploy Square Cloud → Run workflow**.
 
 ### Secrets necessários no repositório
 
@@ -28,10 +28,13 @@ Em **GitHub → Settings → Secrets and variables → Actions** crie:
 ### O que o workflow faz
 
 1. Checkout do repositório  
-2. Setup PHP 8.4 e Composer  
+2. Setup PHP e Composer  
 3. Criação de `auth.json` para Composer (deps privadas)  
 4. `composer install --no-dev`  
-5. Deploy na Square Cloud com `squarecloudofc/github-action@v2` (comando `commit` + `--restart`)
+5. Criação do zip do projeto (`app.zip`)  
+6. Deploy via **API** da Square Cloud: `POST /v2/apps/{id}/commit` (envio do zip) e `POST /v2/apps/{id}/restart`
+
+O deploy usa **curl** direto na API em vez da CLI (`squarecloud commit`), para evitar o erro *"error unmarshalling response body"* quando a API retorna resposta não-JSON.
 
 Para disparar manualmente: **Actions** → **Deploy Square Cloud** → **Run workflow**.
 
