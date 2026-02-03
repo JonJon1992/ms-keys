@@ -1,7 +1,6 @@
 /vendor
 /var
 /logs
-.env
 auth.json
 .idea
 .DS_Store
