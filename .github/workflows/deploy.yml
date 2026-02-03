@@ -99,8 +99,9 @@ jobs:
           curl -sS https://getcomposer.org/download/latest-stable/composer.phar -o composer.phar
           chmod +x composer.phar
 
-      - name: Create deploy zip (sem .git; inclui composer.phar, auth.json e .env vazio)
+      - name: Create deploy zip (sem .git; inclui composer.phar, auth.json e .env com APP_ENV/APP_DEBUG)
         run: |
+          printf 'APP_ENV=production\nAPP_DEBUG=false\n' > .env
           zip -r app.zip . -x ".git/*" -x ".git*" -x "*.zip" -x "vendor/*"
           echo "Zip size: $(du -h app.zip | cut -f1)"
 
