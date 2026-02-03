@@ -100,8 +100,49 @@ Ajuste `SUBDOMAIN` e `DISPLAY_NAME` no `squarecloud.app` se quiser outro nome.
 
 Configure no **Dashboard** da aplicação (Square Cloud) as variáveis que a aplicação usa (banco, Dynamo, S3, fila, etc.), pois arquivos `.env` ou `auth.json` não devem ser commitados e podem não estar no zip.
 
+## Exemplo oficial (GitHub Action da Square Cloud)
+
+O exemplo abaixo é o **oficial** da Square Cloud ([repositório](https://github.com/squarecloudofc/github-action), [Marketplace](https://github.com/marketplace/actions/square-cloud-action)). Use se quiser deploy via CLI em vez da API direta.
+
+**Secrets:** `SQUARE_TOKEN`, `SQUARE_APPLICATION_ID`.
+
+```yaml
+name: Publish
+on:
+  push:
+    branches:
+      - master
+jobs:
+  publish-production:
+    name: Publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Para PHP: instalar deps antes (opcional se a Square Cloud instalar pelo composer.json)
+      # - name: Setup PHP
+      #   uses: shivammathur/setup-php@v2
+      #   with:
+      #     php-version: '8.4'
+      #     tools: composer
+      # - name: Install dependencies
+      #   run: composer install --no-dev
+
+      - name: Deploy to Square Cloud
+        uses: squarecloudofc/github-action@v2
+        with:
+          token: ${{ secrets.SQUARE_TOKEN }}
+          # commit = atualizar app existente; --restart = reiniciar após o commit
+          command: commit ${{ secrets.SQUARE_APPLICATION_ID }} --restart
+```
+
+Neste projeto o workflow usa **chamada direta à API** (curl) em vez desse action, por causa do erro *"error unmarshalling response body"* e do HTTP 520 ao usar a CLI/action.
+
 ## Referências
 
+- [Square Cloud GitHub Action](https://github.com/squarecloudofc/github-action) – exemplo e inputs
+- [Marketplace – Square Cloud Action](https://github.com/marketplace/actions/square-cloud-action)
 - [Documentação Square Cloud](https://docs.squarecloud.app/en/getting-started/overview)
 - [PHP na Square Cloud](https://docs.squarecloud.app/en/articles/getting-started-with-php)
 - [Arquivo de configuração](https://docs.squarecloud.app/en/getting-started/config-file)

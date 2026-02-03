@@ -74,6 +74,10 @@ jobs:
           labels: ${{ steps.meta.outputs.labels }}
 
   # Deploy na Square Cloud (ativo)
+  # Exemplo oficial via action: https://github.com/squarecloudofc/github-action
+  #   uses: squarecloudofc/github-action@v2
+  #   with: token: ${{ secrets.SQUARE_TOKEN }}; command: commit ${{ secrets.SQUARE_APPLICATION_ID }} --restart
+  # Aqui usamos API (curl) por causa de erro unmarshalling/HTTP 520 com a CLI.
   deploy-squarecloud:
     name: Deploy to Square Cloud
     runs-on: ubuntu-latest
