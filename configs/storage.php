@@ -6,8 +6,8 @@ $access_key = env('S3_ACCESS_KEY', 'test');
 $secret_key = env('S3_SECRET_KEY','test');
 $endpoint = env('S3_ENDPOINT', '');
 return [
-    'default' => 'ms-auth',
-    'ms-auth' => [
+    'default' => 'ms-keys',
+    'ms-keys' => [
         'driver' => $driver,
         'region' => $region,
         'access_key' => $access_key,

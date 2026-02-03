@@ -9,6 +9,7 @@ use MSKeys\Domain\Keys\Entities\Contracts\IKeyRepository;
 use MSKeys\Domain\Keys\Entities\Contracts\IKeyService;
 use MSKeys\Domain\Keys\Entities\Key;
 use MSKeys\Module;
+use MSKeys\Application\Jobs\SendEmail\SendEmailJob;
 use Ramsey\Uuid\Uuid;
 use Throwable;
 
@@ -19,12 +20,14 @@ class KeyService implements IKeyService
     public function create($params)
     {
         try {
+            $this->module->queue()->push(new SendEmailJob(['message' => 'teste']));
             $key = $this->saveToDynamo($params['days']);
             return $key;
         } catch (\Exception $e) {
             throw new \Exception($e->getMessage());
         }
     }
+
     public function verify($params)
     {
         try {
@@ -69,6 +72,7 @@ class KeyService implements IKeyService
         $hash = rtrim(strtr(base64_encode($randomBytes), '+/', '-_'), '=');
         return $hash;
     }
+
     private function saveToDynamo($days)
     {
         $key = new Key();

@@ -11,6 +11,6 @@ return [
         "database" => env("DB_DATABASE", "postgres"),
         "username" => env("DB_USERNAME", "postgres"),
         "password" => env("DB_PASSWORD", "postgres"),
-        "sslmode" => env("DB_SSLMODE", "require"),
+        // "sslmode" => env("DB_SSLMODE"),
     ]
 ];

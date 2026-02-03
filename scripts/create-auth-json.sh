@@ -1,12 +1,5 @@
 #!/bin/bash
 
-# Cria auth.json a partir das variáveis do .env
-# Uso: ./scripts/create-auth-json.sh
-#
-# Variáveis esperadas no .env:
-#   COMPOSER_GITHUB_USERNAME=seu_usuario_github
-#   COMPOSER_GITHUB_TOKEN=seu_token_ou_pat_github
-
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
