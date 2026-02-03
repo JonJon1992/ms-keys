@@ -99,9 +99,6 @@ jobs:
           curl -sS https://getcomposer.org/download/latest-stable/composer.phar -o composer.phar
           chmod +x composer.phar
 
-      - name: Create empty .env (Dotenv exige arquivo; valores vêm do Dashboard Square Cloud)
-        run: touch .env
-
       - name: Create deploy zip (sem .git; inclui composer.phar, auth.json e .env vazio)
         run: |
           zip -r app.zip . -x ".git/*" -x ".git*" -x "*.zip" -x "vendor/*"
