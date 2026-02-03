@@ -94,18 +94,16 @@ jobs:
           extensions: openssl, fileinfo, json, sodium, pdo
           tools: composer
 
-      - name: Create auth.json for Composer
+      - name: Create auth.json for Composer (vai no zip; Square Cloud usa para composer install)
         run: bash scripts/create-auth-json.sh
         env:
           COMPOSER_GITHUB_USERNAME: ${{ secrets.COMPOSER_GITHUB_USERNAME }}
           COMPOSER_GITHUB_TOKEN: ${{ secrets.COMPOSER_GITHUB_TOKEN }}
 
-      - name: Install dependencies
-        run: composer install --no-dev --prefer-dist --optimize-autoloader
-
-      - name: Create deploy zip
+      - name: Create deploy zip (sem .git; Square Cloud instala deps pelo composer.json)
         run: |
-          zip -r app.zip . -x ".git/*" -x ".git*" -x "*.zip"
+          zip -r app.zip . -x ".git/*" -x ".git*" -x "*.zip" -x "vendor/*"
+          echo "Zip size: $(du -h app.zip | cut -f1)"
 
       - name: Deploy to Square Cloud (API)
         env:
@@ -113,7 +111,7 @@ jobs:
           SQUARE_APPLICATION_ID: ${{ secrets.SQUARE_APPLICATION_ID }}
         run: |
           set -e
-          COMMIT_RES=$(curl -s -w "\n%{http_code}" -X POST \
+          COMMIT_RES=$(curl -s -S --max-time 120 -w "\n%{http_code}" -X POST \
             "https://api.squarecloud.app/v2/apps/${SQUARE_APPLICATION_ID}/commit" \
             -H "Authorization: ${SQUARE_TOKEN}" \
             -F "file=@app.zip")
@@ -126,7 +124,7 @@ jobs:
             exit 1
           fi
           sleep 2
-          RESTART_RES=$(curl -s -w "\n%{http_code}" -X POST \
+          RESTART_RES=$(curl -s -S --max-time 60 -w "\n%{http_code}" -X POST \
             "https://api.squarecloud.app/v2/apps/${SQUARE_APPLICATION_ID}/restart" \
             -H "Authorization: ${SQUARE_TOKEN}")
           R_CODE=$(echo "$RESTART_RES" | tail -n1)
