@@ -100,7 +100,12 @@ jobs:
           COMPOSER_GITHUB_USERNAME: ${{ secrets.COMPOSER_GITHUB_USERNAME }}
           COMPOSER_GITHUB_TOKEN: ${{ secrets.COMPOSER_GITHUB_TOKEN }}
 
-      - name: Create deploy zip (sem .git; Square Cloud instala deps pelo composer.json)
+      - name: Download composer.phar (Square Cloud espera composer.phar no projeto)
+        run: |
+          curl -sS https://getcomposer.org/download/latest-stable/composer.phar -o composer.phar
+          chmod +x composer.phar
+
+      - name: Create deploy zip (sem .git; inclui composer.phar e auth.json)
         run: |
           zip -r app.zip . -x ".git/*" -x ".git*" -x "*.zip" -x "vendor/*"
           echo "Zip size: $(du -h app.zip | cut -f1)"
