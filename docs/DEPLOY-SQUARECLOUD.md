@@ -21,7 +21,7 @@ Em **GitHub → Settings → Secrets and variables → Actions** crie:
 | Secret | Onde obter |
 |--------|------------|
 | `SQUARE_TOKEN` | [Square Cloud → Conta → Segurança](https://squarecloud.app/en/account/security) → “Request API Key” |
-| `SQUARE_APPLICATION_ID` | ID da aplicação no dashboard Square Cloud (crie a app primeiro via Dashboard ou CLI; o ID aparece na URL ou no painel da aplicação) |
+| `SQUARE_APPLICATION_ID` | **Obrigatório:** a aplicação já deve existir na Square Cloud. Crie uma vez em [Upload](https://squarecloud.app/en/upload) (envie o zip do projeto). Depois abra a aplicação no [Dashboard](https://squarecloud.app/en/dashboard) — o **Application ID** aparece na **URL** da página da app (ex.: `https://squarecloud.app/en/dashboard/.../APP_ID` ou no painel da aplicação). Use esse ID exato no secret. Se o ID estiver errado, a API retorna `404 APP_NOT_FOUND`. |
 | `COMPOSER_GITHUB_USERNAME` | Seu usuário GitHub (para dependências privadas) |
 | `COMPOSER_GITHUB_TOKEN` | [GitHub → Personal access tokens](https://github.com/settings/tokens) (scope `repo`) |
 
