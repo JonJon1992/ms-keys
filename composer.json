@@ -58,7 +58,7 @@
     }
   },
   "scripts": {
-    "start": "php -S localhost:80 public/index.php",
+    "start": "php -S 0.0.0.0:80 public/index.php",
     "artisan": "php cli.php --ansi"
   }
 }
