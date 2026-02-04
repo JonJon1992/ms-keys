@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8e502f5cec9bd14530bed7283aca06c6",
+    "content-hash": "64213a840f92c1fcb1a24921542abda6",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1936,11 +1936,11 @@
         },
         {
             "name": "jonjon1992/php-slim-modular",
-            "version": "2.11.34",
+            "version": "2.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/JonJon1992/php-slim-modular.git",
-                "reference": "fe360abcb5362d000b46a0a32799f8b917bb457c"
+                "reference": "ee2b82650deb559ffc9ce7c4a0988dbe154deb34"
             },
             "require": {
                 "aws/aws-sdk-php": "3.368.0.0",
@@ -2014,7 +2014,7 @@
                 "slim",
                 "sqs"
             ],
-            "time": "2026-02-02T14:32:53+00:00"
+            "time": "2026-02-04T15:27:26+00:00"
         },
         {
             "name": "jonjon1992/s3-php",
